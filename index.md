@@ -26,7 +26,7 @@ Walkthroughs for HTB machines, challenges, and retired boxes.
 ## 🏴‍☠️ CSCG (Cyber Security Challenge Germany)
 
 Writeups, notes, and solutions for CSCG challenges.
-
+[CSCG 2025](/CSCG/CSCG-2025/index.md)
 
 ---
 
