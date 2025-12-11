@@ -27,7 +27,7 @@ Walkthroughs for HTB machines, challenges, and retired boxes.
 
 Writeups, notes, and solutions for CSCG challenges.
 
-[CSCG 2025](/CSCG/CSCG-2025/index.md)
+[CSCG 2025](/CSCG/CSCG-2025/)
 
 ---
 
