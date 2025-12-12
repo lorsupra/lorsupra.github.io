@@ -21,7 +21,6 @@ body {
 }
 
 /* Blinking cursor */
-/* Blinking cursor */
 .cursor {
   display: inline-block;
   margin-left: 4px;
@@ -35,17 +34,26 @@ body {
 }
 
 
-/* Breadcrumb shell path */
+/* Breadcrumb command */
 .breadcrumb {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
   color: #7fdc00;
+}
+
+.breadcrumb .user {
+  color: #6aff00;
+  margin-right: 0.3rem;
+}
+
+.breadcrumb .cmd {
+  color: #9fef00;
+  margin-right: 0.4rem;
 }
 
 .breadcrumb .path {
   color: #6aff00;
 }
-
 
 /* Links */
 a {
