@@ -42,26 +42,6 @@ Ran the binary:
 
 Output:
 ```
-            .     .
-       . _  |\ /| __ .    .
-        |\|/| \/ |/  \.
-        |   .    |  _ \\
-      . |        | / \  \    .
-   _    |    _   |    \  \
-    \   |     \  |     \  \\
-     \  '      \  \     \   \\
-      \  \      `  \     \   \\
-    .  \  |         \.    \   ||
-        /  \         \\    \  //
-       |    |         //    \_/
-    .  \   /   .     //
-        | /          /
-        |/     .    /
-  _____ | _________/
- /     /|
-|  Sat | ite  Hija | ck
- \_____\|__________/
-
 ERROR READING DATA
 ERROR READING DATA
 ERROR READING DATA
@@ -401,26 +381,6 @@ export SAT_PROD_ENVIRONMENT=1
 
 Output:
 ```
-            .     .
-       . _  |\ /| __ .    .
-        |\|/| \/ |/  \.
-        |   .    |  _ \\
-      . |        | / \  \    .
-   _    |    _   |    \  \
-    \   |     \  |     \  \\
-     \  '      \  \     \   \\
-      \  \      `  \     \   \\
-    .  \  |         \.    \   ||
-        /  \         \\    \  //
-       |    |         //    \_/
-    .  \   /   .     //
-        | /          /
-        |/     .    /
-  _____ | _________/
- /     /|
-|  Sat | ite  Hija | ck
- \_____\|__________/
-
 [+] Satellite connection established!
 [+] Transmitting message...
 [+] Message sent successfully!
