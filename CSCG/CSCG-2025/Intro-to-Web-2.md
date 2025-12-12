@@ -1,3 +1,8 @@
+---
+layout: default
+title: Intro To Web 2
+page_type: writeup
+---
 # Intro to Web 2 – HTTP Request Manipulation
 
 **By: supra**
