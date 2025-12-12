@@ -33,6 +33,19 @@ body {
   100% { opacity: 1; }
 }
 
+/* Terminal-style wrapped code blocks */
+pre {
+  white-space: pre-wrap;       /* preserve formatting but allow wrapping */
+  word-wrap: break-word;       /* legacy */
+  overflow-wrap: anywhere;     /* modern browsers */
+  overflow-x: hidden;          /* kill horizontal scrollbar */
+}
+
+code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
 
 /* Breadcrumb command */
 .breadcrumb {
