@@ -1,4 +1,6 @@
-/* Base */
+/* =====================
+   Base
+   ===================== */
 body {
   margin: 0;
   background: #0a0f0a;
@@ -8,7 +10,9 @@ body {
   line-height: 1.7;
 }
 
-/* Terminal command link */
+/* =====================
+   Terminal command link
+   ===================== */
 .cmd-link {
   color: #9fef00;
   text-decoration: none;
@@ -20,7 +24,9 @@ body {
   text-decoration: underline;
 }
 
-/* Blinking cursor */
+/* =====================
+   Blinking cursor
+   ===================== */
 .cursor {
   display: inline-block;
   margin-left: 4px;
@@ -33,24 +39,38 @@ body {
   100% { opacity: 1; }
 }
 
-/* Code blocks (terminal-style, wrapped, no scrollbar) */
-pre {
+/* =====================
+   GitHub Pages code blocks
+   ===================== */
+pre,
+.highlight pre,
+.highlighter-rouge pre {
   background: #050805;
   padding: 1rem;
   border-left: 3px solid #9fef00;
 
-  white-space: pre-wrap;       /* wrap long lines */
-  overflow-wrap: anywhere;     /* break long strings */
-  word-break: break-word;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
 
-  overflow-x: hidden;          /* kill horizontal scrollbar */
+  overflow-x: hidden !important;
 }
 
-pre code {
-  white-space: pre-wrap;
+pre code,
+.highlight pre code,
+.highlighter-rouge pre code {
+  white-space: pre-wrap !important;
 }
 
-/* Breadcrumb command */
+/* Remove width constraints GitHub injects */
+.highlight,
+.highlighter-rouge {
+  max-width: 100%;
+}
+
+/* =====================
+   Breadcrumb command
+   ===================== */
 .breadcrumb {
   margin-top: 0.4rem;
   font-size: 0.95rem;
@@ -71,9 +91,11 @@ pre code {
   color: #6aff00;
 }
 
-/* Links */
+/* =====================
+   Links
+   ===================== */
 a {
-  color: #58d1ff; /* terminal cyan */
+  color: #58d1ff;
   text-decoration: none;
   border-bottom: 1px dotted #58d1ff;
 }
@@ -87,7 +109,9 @@ a:visited {
   color: #4fb3d8;
 }
 
-/* Header */
+/* =====================
+   Header
+   ===================== */
 .terminal-header {
   padding: 2rem;
   border-bottom: 1px solid #1e2a1e;
@@ -111,21 +135,27 @@ a:visited {
   color: #7fdc00;
 }
 
-/* Main content */
+/* =====================
+   Main content
+   ===================== */
 .terminal-content {
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 1.5rem;
 }
 
-/* Headings */
+/* =====================
+   Headings
+   ===================== */
 h1, h2, h3 {
   color: #c7ff3d;
   border-bottom: 1px solid #1e2a1e;
   padding-bottom: 0.3rem;
 }
 
-/* Lists */
+/* =====================
+   Lists
+   ===================== */
 ul {
   list-style: none;
   padding-left: 1rem;
@@ -136,7 +166,9 @@ ul li::before {
   color: #6aff00;
 }
 
-/* Footer */
+/* =====================
+   Footer
+   ===================== */
 .terminal-footer {
   padding: 1.5rem;
   border-top: 1px solid #1e2a1e;
