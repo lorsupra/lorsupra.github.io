@@ -122,19 +122,6 @@ h1, h2, h3 {
   padding-bottom: 0.3rem;
 }
 
-/* Code blocks */
-pre {
-  background: #050805;
-  padding: 1rem;
-  border-left: 3px solid #9fef00;
-  overflow-x: auto;
-}
-
-code {
-  background: #050805;
-  padding: 0.2rem 0.4rem;
-}
-
 /* Lists */
 ul {
   list-style: none;
