@@ -21,9 +21,11 @@ body {
 }
 
 /* Blinking cursor */
+/* Blinking cursor */
 .cursor {
+  display: inline-block;
   margin-left: 4px;
-  animation: blink 1.1s steps(2, start) infinite;
+  animation: blink 1.1s steps(1) infinite;
 }
 
 @keyframes blink {
@@ -31,6 +33,7 @@ body {
   50%  { opacity: 0; }
   100% { opacity: 1; }
 }
+
 
 /* Breadcrumb shell path */
 .breadcrumb {
