@@ -9,12 +9,18 @@
 
 <body>
 
-<header class="terminal-header">
 <div class="prompt">
   <span class="user">$</span>
-  <a href="/" class="cmd-link" aria-label="Return to homepage">./supra</a>
+  <a href="/" class="cmd-link">./supra</a>
+  <span class="cursor">▊</span>
 </div>
-  </div>
+
+{% if page.path != "index.md" %}
+<div class="breadcrumb">
+  <span class="path">{{ page.url | replace: '/', ' / ' | replace_first: ' / ', '~/ ' }}</span>
+</div>
+{% endif %}
+
   <div class="boot">
     <div>[+] loading writeups...</div>
     <div>[+] ready</div>
