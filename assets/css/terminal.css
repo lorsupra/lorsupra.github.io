@@ -153,68 +153,40 @@ h1, h2, h3 {
 }
 
 /* =====================
-   Lists (GLOBAL RESET)
+   Lists
    ===================== */
-ul {
+
+.terminal-content ul {
   list-style: none;
-  padding-left: 1rem;
   margin: 0;
+  padding-left: 0;
 }
-
-/* =====================
-   Index / challenge lists (kramdown: li > p)
-   ===================== */
-.terminal-content ul li {
-  display: flex;
-  align-items: flex-start;
-  margin: 0.3rem 0;
-}
-
-.terminal-content ul li > p {
-  margin: 0;
-  line-height: 1.35;
-  flex: 1;
-}
-
-.terminal-content ul li > p em {
-  display: block;
-  margin-top: 0.15rem;
-  color: #7fdc00;
-  font-style: italic;
-}
-/* =====================
-   Perfectly aligned index bullets
-   ===================== */
 
 .terminal-content ul li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin: 0.3rem 0;
+  margin: 0.6rem 0;
 }
 
-/* Explicit bullet element */
-.terminal-content ul li::before {
-  content: "▸";
-  color: #6aff00;
-  flex-shrink: 0;
-}
-
-/* Force paragraph to behave like terminal output */
+/* kramdown renders li > p */
 .terminal-content ul li > p {
   margin: 0;
-  display: inline;
-  line-height: 1.35;
+  line-height: 1.4;
+}
+
+/* Title line */
+.terminal-content ul li > p a {
+  display: inline-block;
+  font-weight: 500;
 }
 
 /* Description line */
 .terminal-content ul li > p em {
   display: block;
-  margin-left: 0;
   margin-top: 0.15rem;
+  margin-left: 1.2rem;   /* terminal-style indent */
   color: #7fdc00;
   font-style: italic;
 }
+
 
 /* =====================
    Footer
