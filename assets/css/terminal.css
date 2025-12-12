@@ -167,6 +167,34 @@ ul li::before {
 }
 
 /* =====================
+   Tight challenge lists
+   ===================== */
+
+/* Reduce spacing between list items */
+.terminal-content ul li {
+  margin-bottom: 0.6rem;
+}
+
+/* Kill default paragraph margins inside list items */
+.terminal-content ul li p {
+  margin: 0.2rem 0 0.6rem 0;
+}
+
+/* Slight indent so description feels like output */
+.terminal-content ul li p {
+  padding-left: 1.2rem;
+  color: #7fdc00;
+  font-style: italic;
+}
+
+/* Optional: make bullet feel like prompt output */
+.terminal-content ul li::before {
+  content: "▸ ";
+  color: #6aff00;
+}
+
+
+/* =====================
    Footer
    ===================== */
 .terminal-footer {
