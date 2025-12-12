@@ -187,9 +187,11 @@ h1, h2, h3 {
   font-style: italic;
 }
 
-.terminal-content ul li > p a::before {
+/* Prompt-style prefix for index links */
+.terminal-content ul li > p > a::before {
   content: "> ";
   color: #6aff00;
+  display: inline-block;
 }
 
 /* =====================
