@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Supra’s CTF Writeups
+page_type: home
 ---
 
 # Supra’s CTF Writeups
