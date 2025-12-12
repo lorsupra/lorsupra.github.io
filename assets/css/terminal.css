@@ -195,6 +195,37 @@ h1, h2, h3 {
 }
 
 /* =====================
+   Readability tuning
+   ===================== */
+
+/* Main reading text */
+.terminal-content {
+  color: #cfe8c9;  /* soft terminal green */
+}
+
+/* Paragraphs */
+.terminal-content p {
+  color: #cfe8c9;
+}
+
+/* Lists and writeups */
+.terminal-content ul li > p,
+.terminal-content ul li > p em {
+  color: #bfe3b8;
+}
+
+/* Code output stays bright */
+pre,
+code {
+  color: #9fef00;
+}
+
+/* Headings stay bright */
+h1, h2, h3 {
+  color: #c7ff3d;
+}
+
+/* =====================
    Footer
    ===================== */
 .terminal-footer {
