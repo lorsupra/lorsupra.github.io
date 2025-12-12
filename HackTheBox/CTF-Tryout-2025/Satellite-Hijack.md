@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Sattelite Hijack
+title: Satellite Hijack
 page_type: writeup
 ---
 
