@@ -17,7 +17,13 @@
 
 {% if page.path != "index.md" %}
 <div class="breadcrumb">
-  <span class="path">{{ page.url | replace: '/', ' / ' | replace_first: ' / ', '~/ ' }}</span>
+  <span class="path">
+  {{ page.url
+     | remove: '.html'
+     | replace_first: '/', '~/'
+  }}
+</span>
+
 </div>
 {% endif %}
 
