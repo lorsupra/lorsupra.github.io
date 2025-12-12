@@ -1,3 +1,8 @@
+---
+layout: default
+title: Intro To Crypto
+page_type: writeup
+---
 # CSCG 2024: Once-in-Nonce – Stream Cipher Nonce Reuse
 
 **By: supra**
