@@ -167,32 +167,29 @@ ul li::before {
 }
 
 /* =====================
-   Tight challenge lists
+   Tight index list spacing (kramdown structure: li > p)
    ===================== */
 
-/* Reduce spacing between list items */
+.terminal-content ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
 .terminal-content ul li {
-  margin-bottom: 0.6rem;
+  margin: 0.25rem 0;          /* controls spacing between entries */
 }
 
-/* Kill default paragraph margins inside list items */
-.terminal-content ul li p {
-  margin: 0.2rem 0 0.6rem 0;
+.terminal-content ul li > p {
+  margin: 0;                  /* kill the big paragraph margins */
+  line-height: 1.35;          /* tighter vertical rhythm */
 }
 
-/* Slight indent so description feels like output */
-.terminal-content ul li p {
-  padding-left: 1.2rem;
+.terminal-content ul li > p em {
+  display: inline-block;
+  margin-top: 0.15rem;        /* small separation from title */
   color: #7fdc00;
   font-style: italic;
 }
-
-/* Optional: make bullet feel like prompt output */
-.terminal-content ul li::before {
-  content: "▸ ";
-  color: #6aff00;
-}
-
 
 /* =====================
    Footer
