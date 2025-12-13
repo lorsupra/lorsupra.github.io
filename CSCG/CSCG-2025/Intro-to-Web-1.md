@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Intro To Web 1
+title: Intro To Web 1 - Web
 page_type: writeup
 ---
 # Multi-Part Web Challenge – Client-Side Security Bypass
