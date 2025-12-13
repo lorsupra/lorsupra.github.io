@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Flag Casino
+title: Flag Casino - Rev
 page_type: writeup
 ---
 
