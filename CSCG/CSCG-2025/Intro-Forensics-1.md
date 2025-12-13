@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Intro To Forensics
+title: Intro To Forensics - Forensics
 page_type: writeup
 ---
 
