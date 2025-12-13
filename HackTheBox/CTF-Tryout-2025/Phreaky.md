@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Phreaky
+title: Phreaky - Forensics
 page_type: writeup
 ---
 # HTB: Phreaky – Email Exfiltration Forensics
