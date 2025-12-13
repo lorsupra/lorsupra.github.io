@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Don't Panic
+title: Don't Panic - Rev
 page_type: writeup
 ---
 # HTB: Don't Panic – Rust Closure Table Extraction
