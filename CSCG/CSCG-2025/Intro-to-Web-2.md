@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Intro To Web 2
+title: Intro To Web 2 - Web
 page_type: writeup
 ---
 # Intro to Web 2 – HTTP Request Manipulation
