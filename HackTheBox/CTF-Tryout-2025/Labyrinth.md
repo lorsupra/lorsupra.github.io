@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Labyrinth
+title: Labyrinth - Pwn
 page_type: writeup
 ---
 # HTB: Labyrinth – Classic Buffer Overflow Ret2Win
