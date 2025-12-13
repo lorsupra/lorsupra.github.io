@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Omniwatch
+title: Omniwatch - Web
 page_type: writeup
 ---
 # HTB: Omniwatch – Multi-Stage Cache Poisoning Attack Chain
