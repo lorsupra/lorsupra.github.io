@@ -1,3 +1,8 @@
+---
+layout: default
+title: Crocc Crew
+page_type: writeup
+---
 # HTB: CroccCrew – Kerberoasting & Constrained Delegation Abuse
 
 **By: supra**
