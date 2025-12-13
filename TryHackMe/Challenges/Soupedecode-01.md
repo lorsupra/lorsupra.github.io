@@ -35,7 +35,7 @@ The attack exploits poor password hygiene, excessive user privileges, and insecu
 
 ### Port Scanning
 
-The target was scanned with RustScan followed by Nmap for service enumeration:
+The target was scanned with RustScan for service enumeration:
 
 ```bash
 rustscan -a 10.65.172.99 --ulimit 5500 -b 65535 -- -A -Pn
