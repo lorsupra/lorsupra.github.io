@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Flaig Checker
+title: Flaig Checker - Rev
 page_type: writeup
 ---
 
