@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Tunnel Madness
+title: Tunnel Madness - Rev
 page_type: writeup
 ---
 # HTB: Tunnel Madness – 3D Maze Pathfinding
