@@ -1,0 +1,236 @@
+/* =====================
+   Base
+   ===================== */
+body {
+  margin: 0;
+  background: #0a0f0a;
+  color: #9fef00;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* =====================
+   Terminal command link
+   ===================== */
+.cmd-link {
+  color: #9fef00;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cmd-link:hover {
+  color: #c7ff3d;
+  text-decoration: underline;
+}
+
+/* =====================
+   Blinking cursor
+   ===================== */
+.cursor {
+  display: inline-block;
+  margin-left: 4px;
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* =====================
+   GitHub Pages code blocks
+   ===================== */
+pre,
+.highlight pre,
+.highlighter-rouge pre {
+  background: #050805;
+  padding: 1rem;
+  border-left: 3px solid #9fef00;
+
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+
+  overflow-x: hidden !important;
+}
+
+pre code,
+.highlight pre code,
+.highlighter-rouge pre code {
+  white-space: pre-wrap !important;
+}
+
+.highlight,
+.highlighter-rouge {
+  max-width: 100%;
+}
+
+/* =====================
+   Breadcrumb command
+   ===================== */
+.breadcrumb {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #7fdc00;
+}
+
+.breadcrumb .user {
+  color: #6aff00;
+  margin-right: 0.3rem;
+}
+
+.breadcrumb .cmd {
+  color: #9fef00;
+  margin-right: 0.4rem;
+}
+
+.breadcrumb .path {
+  color: #6aff00;
+}
+
+/* =====================
+   Links
+   ===================== */
+a {
+  color: #58d1ff;
+  text-decoration: none;
+  border-bottom: 1px dotted #58d1ff;
+}
+
+a:hover {
+  color: #9ae6ff;
+  border-bottom: 1px solid #9ae6ff;
+}
+
+a:visited {
+  color: #4fb3d8;
+}
+
+/* =====================
+   Header
+   ===================== */
+.terminal-header {
+  padding: 2rem;
+  border-bottom: 1px solid #1e2a1e;
+}
+
+.prompt {
+  font-size: 1.4rem;
+}
+
+.user {
+  color: #6aff00;
+}
+
+.cmd {
+  color: #9fef00;
+}
+
+.boot {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #7fdc00;
+}
+
+/* =====================
+   Main content
+   ===================== */
+.terminal-content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* =====================
+   Headings
+   ===================== */
+h1, h2, h3 {
+  color: #c7ff3d;
+  border-bottom: 1px solid #1e2a1e;
+  padding-bottom: 0.3rem;
+}
+
+/* =====================
+   Lists
+   ===================== */
+
+.terminal-content ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.terminal-content ul li {
+  margin: 0.6rem 0;
+}
+
+/* kramdown renders li > p */
+.terminal-content ul li > p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Title line */
+.terminal-content ul li > p a {
+  display: inline-block;
+  font-weight: 500;
+}
+
+/* Description line */
+.terminal-content ul li > p em {
+  display: block;
+  margin-top: 0.15rem;
+  margin-left: 1.2rem;   /* terminal-style indent */
+  color: #7fdc00;
+  font-style: italic;
+}
+
+/* Prompt-style prefix for index links */
+.terminal-content ul li > p > a::before {
+  content: "> ";
+  color: #6aff00;
+  display: inline-block;
+}
+
+/* =====================
+   Readability tuning
+   ===================== */
+
+/* Main reading text */
+.terminal-content {
+  color: #cfe8c9;  /* soft terminal green */
+}
+
+/* Paragraphs */
+.terminal-content p {
+  color: #cfe8c9;
+}
+
+/* Lists and writeups */
+.terminal-content ul li > p,
+.terminal-content ul li > p em {
+  color: #bfe3b8;
+}
+
+/* Code output stays bright */
+pre,
+code {
+  color: #9fef00;
+}
+
+/* Headings stay bright */
+h1, h2, h3 {
+  color: #c7ff3d;
+}
+
+/* =====================
+   Footer
+   ===================== */
+.terminal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #1e2a1e;
+  color: #6aff00;
+  text-align: left;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/assets/css/terminal.css">
+</head>
+
+<body>
+
+<header class="terminal-header">
+
+  <!-- Run binary -->
+  <div class="prompt">
+    <span class="user">$</span>
+    <a href="/" class="cmd-link">./supra</a>
+    <span class="cursor">▊</span>
+  </div>
+
+  <!-- Change directory (not on home) -->
+{% unless page.url == "/" %}
+  {% assign clean_url = page.url | remove: ".html" %}
+
+  {% if page.page_type == "index" %}
+    {% assign dir_path = clean_url %}
+  {% else %}
+    {% assign parts = clean_url | split: "/" %}
+    {% assign filename = parts | last %}
+    {% assign dir_path = clean_url | remove: filename %}
+  {% endif %}
+
+  <!-- cd into directory -->
+  <div class="breadcrumb">
+    <span class="user">$</span>
+    <span class="cmd">cd</span>
+    <span class="path">~/CTF-Writeups{{ dir_path }}</span>
+  </div>
+
+  <!-- ls or cat -->
+  {% if page.page_type == "index" %}
+    <div class="breadcrumb">
+      <span class="user">$</span>
+      <span class="cmd">ls</span>
+    </div>
+
+  {% elsif page.page_type == "writeup" %}
+    <div class="breadcrumb">
+      <span class="user">$</span>
+      <span class="cmd">cat</span>
+      <span class="path">{{ filename | downcase }}</span>
+    </div>
+  {% endif %}
+{% endunless %}
+
+
+</header>
+
+<main class="terminal-content">
+  {{ content }}
+</main>
+
+<footer class="terminal-footer">
+  <span>supra@ctf ~ %</span>
+</footer>
+
+</body>
+</html>
