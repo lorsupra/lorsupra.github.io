@@ -40,7 +40,7 @@ This attack abuses **TRUSTED_TO_AUTH_FOR_DELEGATION**, allowing a compromised se
 A full scan was performed to identify exposed services:
 
 ```bash
-rustscan -a 10.64.158.191 --ulimit 5500 -b 65535 -- -A -Pn
+rustscan -a 10.64.158.191 --ulimit 5500 -- -A -Pn
 ````
 
 The target exposed standard Active Directory services:
