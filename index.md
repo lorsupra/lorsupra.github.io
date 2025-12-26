@@ -27,5 +27,5 @@ page_type: home
 </div>
 
 <div style="margin-top: 2rem; color: #7fdc00;">
-3 directories
+4 directories
 </div>
