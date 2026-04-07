@@ -6,6 +6,10 @@ page_type: writeup
 
 # HopSec Asylum – Full Intrusion Walkthrough
 
+**Platform:** TryHackMe
+**Category:** Web Exploitation / OSINT / Privilege Escalation
+**Difficulty:** Medium
+
 Entering HopSec Asylum felt less like accessing a CTF box and more like infiltrating a malfunctioning institution whose staff placed far too much trust in client-side controls, unvalidated tokens, and poorly isolated containers.
 
 ## 0. Pre-Quest – Finding the Key (Advent of Cyber Day 1)
