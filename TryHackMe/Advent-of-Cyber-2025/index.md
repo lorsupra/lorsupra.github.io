@@ -8,3 +8,6 @@ page_type: index
 
 - [Schema Catcher](Schema-Catcher)  
   *Leakless heap exploitation (House of Water), container escape, and kernel module abuse for root.*
+
+- [Hopper's Origins](Hoppers-Origins)  
+  *Multi-forest AD compromise: LLM prompt injection, Golden Ticket escalation, cross-forest pivoting, and ESC4 certificate abuse.*
