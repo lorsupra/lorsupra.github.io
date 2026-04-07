@@ -10,7 +10,7 @@ page_type: writeup
 **Category:** Active Directory / Multi-Forest Penetration Testing
 **Difficulty:** Insane
 
-<img src="images/hoppers-origins-network-map.png" alt="Network map" style="width:45%">
+<img src="images/hoppers-origins-network-map.png" alt="Network map" style="width:95%">
 
 ## 0. High-Level Overview
 
