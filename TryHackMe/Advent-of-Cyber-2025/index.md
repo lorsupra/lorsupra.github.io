@@ -11,3 +11,6 @@ page_type: index
 
 - [Schema Catcher](Schema-Catcher)  
   *Leakless heap exploitation (House of Water), container escape, and kernel module abuse for root.*
+
+- [Breachblocker Unlocker](Breachblocker-Unlocker)  
+  *Mobile app exploitation: Nginx source leak, timing attack password recovery, and SMTP domain confusion for 2FA bypass.*
