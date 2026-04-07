@@ -13,7 +13,9 @@ page_type: home
 <br>
 ├── <span style="color: #6aff00;">TryHackMe/</span>
 <br>
-│   └── <a href="TryHackMe/Challenges/" style="color: #4ab300; text-decoration: none; border-bottom: 1px dotted #4ab300;">Challenges/</a>
+│   ├── <a href="TryHackMe/Challenges/" style="color: #4ab300; text-decoration: none; border-bottom: 1px dotted #4ab300;">Challenges/</a>
+<br>
+│   └── <a href="TryHackMe/Advent-of-Cyber-2025/" style="color: #4ab300; text-decoration: none; border-bottom: 1px dotted #4ab300;">Advent-of-Cyber-2025/</a>
 <br>
 ├── <span style="color: #9fef00;">HackTheBox/</span>
 <br>
@@ -27,5 +29,5 @@ page_type: home
 </div>
 
 <div style="margin-top: 2rem; color: #7fdc00;">
-4 directories
+5 directories
 </div>
