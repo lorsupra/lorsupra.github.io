@@ -96,7 +96,7 @@ Services discovered:
 
 This immediately suggested a chain: frontend → door console → camera/video pipeline → SCADA → underlying system.
 
-![Service map](images/01-service-map.png)
+<img src="images/01-service-map.png" alt="Service map" style="width:30%">
 
 ## 2. Fakebook Enumeration (Port 8000)
 
@@ -115,7 +115,7 @@ Johnnyboy1982!
 
 It worked on the HopSec Security Console (8080). The leftmost key (Cell / Storage Wing) now showed an Emergency Unlock button.
 
-![Security Console login](images/02-security-console-login.png)
+<img src="images/02-security-console-login.png" alt="Security Console login" style="width:30%">
 
 ## 3. Hopper's Cell – Flag 1 (Port 8080)
 
@@ -135,7 +135,7 @@ THM{h0pp1ing_m4d}
 
 Wing 1 cleared.
 
-![Flag 1](images/05-flag1.png)
+<img src="images/05-flag1.png" alt="Flag 1" style="width:30%">
 
 ## 4. Camera System – HTTP Parameter Pollution (Port 13400/13401)
 
@@ -161,7 +161,7 @@ POST /v1/streams/request?tier=admin HTTP/1.1
 
 The server returns `admin` as the `effective_tier`, granting access to the Psych Ward Exit camera feed.
 
-![Psych Ward keycode from camera feed](images/06-psych-ward-keycode.png)
+<img src="images/06-psych-ward-keycode.png" alt="Psych Ward keycode from camera feed" style="width:30%">
 
 ## 5. Psych Ward Unlock – First Half of Flag 2
 
@@ -171,7 +171,7 @@ The admin camera feed shows a guard entering a keycode into the physical Psych W
 THM{Y0u_h4ve_b3en_
 ```
 
-![Flag 2 part 1](images/07-flag2-part1.png)
+<img src="images/07-flag2-part1.png" alt="Flag 2 part 1" style="width:30%">
 
 ## 6. Diagnostic System Exploit – Second Half of Flag 2 (Port 13401/13404)
 
@@ -213,11 +213,11 @@ Flag 2 complete. This flag also serves as the authentication token for the SCADA
 
 ## 7. SCADA Terminal (Port 9001)
 
-![SCADA terminal](images/08-scada-terminal.png)
+<img src="images/08-scada-terminal.png" alt="SCADA terminal" style="width:30%">
 
 Logging in with Flag 2 granted access to the SCADA terminal, but it reported the need for a final Unlock Code stored deeper in the system's containers. Time to escalate.
 
-![SCADA access](images/09-scada-access.png)
+<img src="images/09-scada-access.png" alt="SCADA access" style="width:30%">
 
 ## 8. Privilege Escalation to dockermgr
 
@@ -271,27 +271,27 @@ find /var/snap/docker -name unlock_code 2>/dev/null
 
 Either way yields the unlock code: `739184627`
 
-![Unlock code](images/10-unlock-code.png)
+<img src="images/10-unlock-code.png" alt="Unlock code" style="width:30%">
 
 ## 11. Final Escape – Flag 3
 
 Entering `739184627` into the bottom key icon on the Security Console unlocked the final door.
 
-![Final door unlocked](images/11-final-door.png)
+<img src="images/11-final-door.png" alt="Final door unlocked" style="width:30%">
 
-![Door unlocked](images/12-door-unlocked.png)
+<img src="images/12-door-unlocked.png" alt="Door unlocked" style="width:30%">
 
 A door appears at the bottom of the map.
 
-![Exit door](images/13-exit-door.png)
+<img src="images/13-exit-door.png" alt="Exit door" style="width:30%">
 
 After clicking the door, you are prompted for all three flags.
 
-![Flag prompt](images/14-flag-prompt.png)
+<img src="images/14-flag-prompt.png" alt="Flag prompt" style="width:30%">
 
 Challenge complete.
 
-![Challenge complete](images/15-challenge-complete.png)
+<img src="images/15-challenge-complete.png" alt="Challenge complete" style="width:30%">
 
 ---
 
