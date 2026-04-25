@@ -587,20 +587,6 @@ GLIBC_TUNABLES
 
 ***
 
-## Tools Used
-
-- RustScan - Fast port scanning
-- Nmap - Service enumeration
-- curl - API interaction and testing
-- Browser Developer Tools - JavaScript analysis
-- JavaScript Unpacker - Deobfuscation
-- base64 - Decoding
-- sshpass - Automated SSH file transfer
-- CVE-2023-0386 exploit - OverlayFS privilege escalation
-- CVE-2023-4911 exploit - GLIBC buffer overflow
-
-***
-
 ## References
 
 - [CVE-2023-0386 Details](https://nvd.nist.gov/vuln/detail/CVE-2023-0386)
