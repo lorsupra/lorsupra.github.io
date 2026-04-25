@@ -85,7 +85,7 @@ get user.txt
 ```
 
 ```
-THM{Gu3st_Pl3as3}
+THM{Gu3s......}
 ```
 
 A guest account shouldn't have read access to a share called `Home` containing user-flag-equivalent content in any production environment. In CTF land, it's the on-ramp to the AD enumeration phase.
@@ -218,7 +218,7 @@ evil-winrm -i 10.64.158.191 -u Administrator -H <hash>
 Boom -- shell as `COOCTUS\Administrator` on the Domain Controller. Final flag:
 
 ```
-THM{Cr0ccCrewStr1kes!}
+THM{Cr0ccC........}
 ```
 
 ## Attack Chain Summary
