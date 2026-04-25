@@ -63,9 +63,26 @@ $password = "B4dt0th3b0n3";
 
 These credentials don't end up being load-bearing for the AD chain, but their presence is a tell. The kind of environment that leaves a `.bak` file in webroot is the same kind of environment that leaves service accounts with weak passwords. It's a signal to keep digging.
 
-## 2. Initial Foothold - Guest SMB
+## 2. Initial Foothold - From Empty Hands to Guest Creds
 
-Guest credentials had been provided. First step: validate them.
+The challenge starts with no credentials. First moves: anonymous protocol probes.
+
+```bash
+rpcclient -U "" 10.64.158.191
+rpcclient -U% 10.64.158.191
+```
+
+The null session connected, but every interesting RPC call (`enumdomusers`, `enumdomains`) returned `NT_STATUS_ACCESS_DENIED`. SMB null sessions were similarly locked down. Standard pre-auth recon dries up fast against a Server 2019 DC with default hardening.
+
+The breakthrough came from RDP. Connecting with no credentials drops you on the lock screen, and the lock screen background has a sticky note image with credentials in plain text:
+
+```
+Visitor : GuestLogin!
+```
+
+This is a CTF flourish, but it has a real-world equivalent. Physical pentest engagements regularly find sticky notes under keyboards. Citrix and RDP environments have been compromised more than once because the login banner or wallpaper included demo credentials nobody bothered to remove. Visual recon of authentication surfaces is part of the job.
+
+With the discovered creds in hand, I validated them:
 
 ```bash
 crackmapexec smb DC.COOCTUS.CORP -u Visitor -p GuestLogin!
@@ -85,7 +102,7 @@ get user.txt
 ```
 
 ```
-THM{Gu3s......}
+THM{Gu3s........}
 ```
 
 A guest account shouldn't have read access to a share called `Home` containing user-flag-equivalent content in any production environment. In CTF land, it's the on-ramp to the AD enumeration phase.
@@ -100,9 +117,13 @@ ldapdomaindump -u '10.64.158.191\Visitor' -p 'GuestLogin!' DC.COOCTUS.CORP
 
 This produced HTML and JSON files covering users, groups, computers, and policies. The interesting accounts surfaced quickly when I sorted by `userAccountControl` flags.
 
-### 3.1 The Smoking Gun
+### 3.1 Two Accounts Worth Looking At
 
-One service account stood out:
+Two accounts in the dump didn't fit the pattern of normal users.
+
+The first was `admCroccCrew` -- a clearly admin-styled account name. Given the challenge framing ("Crocc Crew has created a backdoor on a Cooctus Corp Domain Controller"), this is the planted backdoor the room wants you to find. It's the easy answer to "what did they plant," but on its own it's just a named account. The membership and privileges would have to do something dangerous for it to actually matter.
+
+The second account was where the path to DA actually lived: `password-reset`.
 
 | Account | SPN | Flags |
 |---------|-----|-------|
@@ -114,6 +135,8 @@ That single row contains a complete attack path:
 - **TRUSTED_TO_AUTH_FOR_DELEGATION set** -- constrained delegation with protocol transition (S4U2Self). This account can ask the KDC for a service ticket as *any* user, without that user's password.
 
 Either of these alone is a finding. Together, on the same account, it's a direct path from "any domain user" to "Domain Admin."
+
+Crocc Crew's planted backdoor is the visible threat; `password-reset`'s misconfiguration is the more dangerous one. The room rewards finding both, but only one of them takes us all the way to DA.
 
 Key concept for newer folks: The TRUSTED_TO_AUTH_FOR_DELEGATION flag is the dangerous one. Plain constrained delegation requires that the user already authenticated to the service in a way that produces a forwardable ticket. Protocol transition removes that requirement -- the service account fabricates the user's identity from nothing.
 
@@ -128,7 +151,7 @@ GetUserSPNs.py COOCTUS.CORP/Visitor:GuestLogin! \
   -outputfile out.txt
 ```
 
-The ticket came back as RC4-HMAC (etype 23). RC4 in 2025 is the gift that keeps on giving -- it cracks orders of magnitude faster than AES, and it's still issued anywhere a service account doesn't explicitly opt into AES-only.
+The ticket came back as RC4-HMAC (etype 23). RC4 is the gift that keeps on giving -- it cracks orders of magnitude faster than AES, and it's still issued anywhere a service account doesn't explicitly opt into AES-only encryption types.
 
 ### 4.1 Cracking the Ticket
 
@@ -181,7 +204,7 @@ getST.py -spn oakley/DC.COOCTUS.CORP \
 Loaded it into the environment:
 
 ```bash
-export KRB5CCNAME=Administrator@oakley_DC.COOCTUS.CORP.ccache
+export KRB5CCNAME=Administrator.ccache
 klist
 ```
 
@@ -197,15 +220,16 @@ With the forged ticket loaded, Impacket's `secretsdump` runs over Kerberos again
 secretsdump.py -k -no-pass DC.COOCTUS.CORP
 ```
 
-`-k -no-pass` tells secretsdump to use the cached Kerberos ticket instead of password authentication. From there, it issues a DRSUAPI replication request -- the same mechanism domain controllers use to sync with each other. This is what DCSync actually is: legitimate AD replication, abused by a non-DC principal.
+`-k -no-pass` tells secretsdump to use the cached Kerberos ticket instead of password authentication. The tool dumps local SAM hashes first, then walks NTDS.dit via the DRSUAPI replication API -- the same mechanism domain controllers use to sync with each other. DCSync, mechanically, is just legitimate AD replication abused by a non-DC principal.
 
-Output included NTLM hashes for every domain account. The one we care about:
+The output dumped every domain credential. The one we want:
 
 ```
+[*] Using the DRSUAPI method to get NTDS.DIT secrets
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:<NTLM_HASH>:::
 ```
 
-That's the credential we've been climbing toward.
+The Domain Administrator NTLM hash. That's what we've been climbing toward.
 
 ## 8. Domain Compromise
 
@@ -218,7 +242,7 @@ evil-winrm -i 10.64.158.191 -u Administrator -H <hash>
 Boom -- shell as `COOCTUS\Administrator` on the Domain Controller. Final flag:
 
 ```
-THM{Cr0ccC........}
+THM{Cr0ccCr.........}
 ```
 
 ## Attack Chain Summary
@@ -364,6 +388,6 @@ If you can only fix five things after reading this writeup, prioritize these:
 
 This challenge is a study in how Active Directory's most powerful features become its most dangerous attack paths when paired with weak credential hygiene. None of the primitives used here are zero-days. Kerberoasting is from 2014. S4U abuse is older. RC4's deprecation has been "any year now" since at least 2017. They keep working because environments keep shipping with default service accounts, weak passwords on those accounts, and delegation flags set by administrators who don't fully understand the implications.
 
-The defensive recommendations are not novel either. gMSAs landed in Windows Server 2012. Resource-Based Constrained Delegation has been the recommended replacement for plain constrained delegation since 2012 R2. The Protected Users group landed in 2012 R2. These features exist, they just don't get adopted because the legacy configuration "still works."
+The defensive recommendations are not novel either. gMSAs landed in Windows Server 2012. Resource-Based Constrained Delegation has been the recommended replacement for plain constrained delegation since 2012 R2. The Protected Users group landed in 2012 R2. These features exist -- they just don't get adopted because the legacy configuration "still works."
 
 Active Directory environments don't get compromised because the attack techniques are too sophisticated to defend against. They get compromised because a service account from 2009 still has its original 12-character password and a delegation flag that nobody remembers setting.
