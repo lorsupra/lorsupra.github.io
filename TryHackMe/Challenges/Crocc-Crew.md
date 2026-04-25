@@ -4,7 +4,7 @@ title: CroccCrew – Active Directory
 page_type: writeup
 ---
 
-# HTB: CroccCrew – Kerberoasting & Constrained Delegation Abuse
+# THM: CroccCrew – Kerberoasting & Constrained Delegation Abuse
 
 **Category:** Active Directory
 
